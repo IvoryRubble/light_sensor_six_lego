@@ -35,8 +35,8 @@ void loop() {
   calcLinePosition();
   
   printValues();
-  printValuesNorm();
-  Serial.println(linePosition);
+  //printValuesNorm();
+  //Serial.println(linePosition);
 
   if (digitalRead(CALIBRATION_BUTTON) == LOW) {
     calibration();
