@@ -44,7 +44,7 @@ void loop() {
   printValues();
   //printValuesNorm();
   //Serial.println(linePosition);
-  Serial.println(polePosition);
+  //Serial.println(polePosition);
 
   if (digitalRead(CALIBRATION_BUTTON) == LOW) {
     calibration();
@@ -93,8 +93,9 @@ void calcLinePosition() {
 void calcPolePosition() {
   polePosition = 0;
   for (int i = 0; i < 6; i++) {
-    linePosition += valuesNorm[i] * 2 - 1;
+    polePosition += valuesNorm[i] * 2 - 1;
   }
+  polePosition /= 6;
   polePosition = constrain(polePosition, -1.0f, 1.0f);
 }
 
