@@ -1,8 +1,9 @@
 #include <Wire.h>
 
 const int SLAVE_ADDRESS = 0x04;
-const int CALIBRATION_BUTTON = 2;
 const unsigned long CALIBRATION_TIME = 3000;
+const int CALIBRATION_BUTTON = 2;
+const int LED = 5;
 
 uint8_t message[8] = {0};
 
@@ -15,10 +16,14 @@ int valuesMax[6] = {1023, 1023, 1023, 1023, 1023, 1023};
 float positions[6] = {-1, -0.67, -0.33, 0.33, 0.67, 1};
 
 void setup() {
-  Serial.begin(9600); // start serial for output
   Wire.begin(SLAVE_ADDRESS);
   Wire.onReceive(receiveData);
   Wire.onRequest(sendData);
+
+  pinMode(CALIBRATION_BUTTON, INPUT_PULLUP);
+  
+  
+  Serial.begin(9600); 
   Serial.println("Ready");
   Serial.print("SlaveAddress = 0x");
   Serial.println(SLAVE_ADDRESS, HEX);
@@ -28,7 +33,10 @@ void loop() {
   getValues();
 
   printValues();
-  
+
+  if (digitalRead(CALIBRATION_BUTTON) == LOW) {
+    calibration();
+  }
   //delay(1000);
 }
 
