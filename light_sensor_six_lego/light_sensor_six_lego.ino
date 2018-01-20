@@ -31,8 +31,12 @@ void setup() {
 
 void loop() {
   getValues();
-
+  calcNormValues();
+  calcLinePosition();
+  
   printValues();
+  printValuesNorm();
+  Serial.println(linePosition);
 
   if (digitalRead(CALIBRATION_BUTTON) == LOW) {
     calibration();
@@ -84,6 +88,14 @@ void printValues() {
   char s[50];
   for (int i = 0; i < 6; i++) {
     sprintf(s, "%d\t", values[i]);
+    Serial.println(s);
+  }
+}
+
+void printValuesNorm() {
+  char s[50];
+  for (int i = 0; i < 6; i++) {
+    sprintf(s, "%g\t", (double)valuesNorm[i]);
     Serial.println(s);
   }
 }

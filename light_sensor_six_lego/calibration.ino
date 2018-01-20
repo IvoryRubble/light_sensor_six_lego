@@ -42,7 +42,7 @@ void calibration() {
   
   char s[50];
   for (int i = 0; i < 6; i++) {
-    sprintf(s, "valuesMin[%d] = %d\t\t valuesmax[%d] = %d", i, valuesMin[i], i, valuesMax[i]); 
+    sprintf(s, "valuesMin[%d] = %d\t\t valuesmax[%d] = %d \n", i, valuesMin[i], i, valuesMax[i]); 
   }
   Serial.print(s);
   Serial.flush();
