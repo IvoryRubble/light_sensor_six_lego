@@ -13,7 +13,7 @@ float linePosition = 0;
 
 int valuesMin[6] = {0, 0, 0, 0, 0, 0};
 int valuesMax[6] = {1023, 1023, 1023, 1023, 1023, 1023};
-float positions[6] = {-1, -0.67, -0.33, 0.33, 0.67, 1};
+float weights[6] = {-0.5, -0.33, -0.167, 0.167, 0.33, 0.5};
 
 void setup() {
   Wire.begin(SLAVE_ADDRESS);
@@ -76,16 +76,9 @@ void calcNormValues() {
 }
 
 void calcLinePosition() {
-  float valuesNormSum = 0;
   for (int i = 0; i < 6; i++) {
-    valuesNormSum += valuesNorm[i];
+    linePosition += weights[i] * valuesNorm[i];
   }
-
-  //linePosition = positions[0]*(valiesNorm[0]/valuesNormSum) + ... + positions[5]*(valiesNorm[5]/valuesNormSum)
-  for (int i = 0; i < 6; i++) {
-    linePosition += positions[i] * valuesNorm[i];
-  }
-  linePosition = linePosition / valuesNormSum;
   linePosition = constrain(linePosition, -1.0f, 1.0f);
 }
 
