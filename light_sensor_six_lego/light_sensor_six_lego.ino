@@ -32,8 +32,7 @@ void loop() {
   //delay(1000);
 }
 
-void makeMessage()
-{
+void makeMessage() {
   message[7] = values[0];
   message[6] = values[1];
   message[5] = values[2];
@@ -42,8 +41,7 @@ void makeMessage()
   message[2] = values[5];
 }
 
-void getValues()
-{
+void getValues() {
   values[0] = analogRead(A0);
   values[1] = analogRead(A1);
   values[2] = analogRead(A2);
@@ -52,8 +50,7 @@ void getValues()
   values[5] = analogRead(A5);
 }
 
-void calcNormValues()
-{
+void calcNormValues() {
   for (int i = 0; i < 6; i++) {
     //valuesNorm[i] from 0 to 1
     valuesNorm[i] = (float)(values[i] - valuesMin[i]) / (float)(valuesMax[i] - valuesMin[i]);
@@ -61,40 +58,33 @@ void calcNormValues()
   }
 }
 
-void calcLinePosition()
-{
+void calcLinePosition() {
   float valuesNormSum = 0;
-  for (int i = 0; i < 6; i++)
-  {
+  for (int i = 0; i < 6; i++) {
     valuesNormSum += valuesNorm[i];
   }
 
   //linePosition = positions[0]*(valiesNorm[0]/valuesNormSum) + ... + positions[5]*(valiesNorm[5]/valuesNormSum)
-  for (int i = 0; i < 6; i++)
-  {
+  for (int i = 0; i < 6; i++) {
     linePosition += positions[i] * valuesNorm[i];
   }
   linePosition = linePosition / valuesNormSum;
   linePosition = constrain(linePosition, -1.0f, 1.0f);
 }
 
-void printValues()
-{
+void printValues() {
   char s[50];
-  for (int i = 0; i < 6; i++)
-  {
+  for (int i = 0; i < 6; i++) {
     sprintf(s, "%d\t", values[i]);
     Serial.println(s);
   }
 }
 
-void receiveData(int byteCount)
-{
+void receiveData(int byteCount) {
   byteCount = byteCount; //just suppress unsused parameter warning 
   //nothing
 }
 
-void sendData()
-{
+void sendData() {
   Wire.write(message, 8);
 }
