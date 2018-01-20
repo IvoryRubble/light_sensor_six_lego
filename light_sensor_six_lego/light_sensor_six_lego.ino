@@ -21,7 +21,8 @@ void setup() {
   Wire.onRequest(sendData);
 
   pinMode(CALIBRATION_BUTTON, INPUT_PULLUP);
-  
+  pinMode(LED, OUTPUT);
+  digitalWrite(LED, LOW);
   
   Serial.begin(9600); 
   Serial.println("Ready");

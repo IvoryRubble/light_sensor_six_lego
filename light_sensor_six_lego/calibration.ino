@@ -11,7 +11,8 @@ void calibration() {
   const unsigned long ledOffTime = 125;
   unsigned long lastLedSwitchTime = currentTime;
   int ledState = LOW;
-                                   
+  digitalWrite(LED, LOW);
+                                     
   while (currentTime - startTime < CALIBRATION_TIME) {
     getValues();
     for (int i = 0; i < 6; i++) {
