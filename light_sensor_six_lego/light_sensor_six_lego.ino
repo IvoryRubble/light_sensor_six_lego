@@ -1,15 +1,8 @@
 #include <Wire.h>
-#define SLAVE_ADDRESS 0x04
 
-void setup() {
-  Serial.begin(9600); // start serial for output
-  Wire.begin(SLAVE_ADDRESS);
-  Wire.onReceive(receiveData);
-  Wire.onRequest(sendData);
-  Serial.println("Ready!");
-  Serial.print("SlaveAddress = 0x");
-  Serial.println(SLAVE_ADDRESS, HEX);
-}
+const int SLAVE_ADDRESS = 0x04;
+const int CALIBRATION_BUTTON = 2;
+const unsigned long CALIBRATION_TIME = 3000;
 
 uint8_t message[8] = {0};
 
@@ -21,13 +14,18 @@ int valuesMin[6] = {0, 0, 0, 0, 0, 0};
 int valuesMax[6] = {1023, 1023, 1023, 1023, 1023, 1023};
 float positions[6] = {-1, -0.67, -0.33, 0.33, 0.67, 1};
 
+void setup() {
+  Serial.begin(9600); // start serial for output
+  Wire.begin(SLAVE_ADDRESS);
+  Wire.onReceive(receiveData);
+  Wire.onRequest(sendData);
+  Serial.println("Ready");
+  Serial.print("SlaveAddress = 0x");
+  Serial.println(SLAVE_ADDRESS, HEX);
+}
+
 void loop() {
-  values[0] = analogRead(A0);
-  values[1] = analogRead(A1);
-  values[2] = analogRead(A2);
-  values[3] = analogRead(A3);
-  values[4] = analogRead(A4);
-  values[5] = analogRead(A5);
+  getValues();
 
   printValues();
   
@@ -44,10 +42,19 @@ void makeMessage()
   message[2] = values[5];
 }
 
+void getValues()
+{
+  values[0] = analogRead(A0);
+  values[1] = analogRead(A1);
+  values[2] = analogRead(A2);
+  values[3] = analogRead(A3);
+  values[4] = analogRead(A4);
+  values[5] = analogRead(A5);
+}
+
 void calcNormValues()
 {
-  for (int i = 0; i < 6; i++)
-  {
+  for (int i = 0; i < 6; i++) {
     //valuesNorm[i] from 0 to 1
     valuesNorm[i] = (float)(values[i] - valuesMin[i]) / (float)(valuesMax[i] - valuesMin[i]);
     valuesNorm[i] = constrain(valuesNorm[i], 0.0f, 1.0f); 
