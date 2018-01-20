@@ -33,6 +33,8 @@ void loop() {
   getValues();
   calcNormValues();
   calcLinePosition();
+
+  makeMessage();
   
   printValues();
   //printValuesNorm();
@@ -45,12 +47,14 @@ void loop() {
 }
 
 void makeMessage() {
-  message[7] = values[0];
-  message[6] = values[1];
-  message[5] = values[2];
-  message[4] = values[3];
-  message[3] = values[4];
-  message[2] = values[5];
+  message[7] = map(valuesNorm[0], 0, 1, -127, 127);
+  message[6] = map(valuesNorm[1], 0, 1, -127, 127);
+  message[5] = map(valuesNorm[2], 0, 1, -127, 127);
+  message[4] = map(valuesNorm[3], 0, 1, -127, 127);
+  message[3] = map(valuesNorm[4], 0, 1, -127, 127);
+  message[2] = map(valuesNorm[5], 0, 1, -127, 127);
+
+  message[1] = map(linePosition, -1, 1, -127, 127);
 }
 
 void getValues() {
