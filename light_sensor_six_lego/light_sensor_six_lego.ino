@@ -8,12 +8,15 @@ const int LED = 5;
 uint8_t message[8] = {0};
 
 int values[6] = {0};
-float valuesNorm[6] = {0};
-float linePosition = 0;
-
+float valuesNorm[6] = {0}; //form 0 to 1
+float linePosition = 0; //from -1 to 1
+float polePosition = 0; //from -1 to 1 
+                        //polePosition >= 0 => on black pole
+                        //polePosition < 0 => on white pole
+                        
 int valuesMin[6] = {0, 0, 0, 0, 0, 0};
 int valuesMax[6] = {1023, 1023, 1023, 1023, 1023, 1023};
-float positions[6] = {-1, -0.67, -0.33, 0.33, 0.67, 1};
+float weights[6] = {-0.5, -0.33, -0.167, 0.167, 0.33, 0.5};
 
 void setup() {
   Wire.begin(SLAVE_ADDRESS);
@@ -21,7 +24,8 @@ void setup() {
   Wire.onRequest(sendData);
 
   pinMode(CALIBRATION_BUTTON, INPUT_PULLUP);
-  
+  pinMode(LED, OUTPUT);
+  digitalWrite(LED, LOW);
   
   Serial.begin(9600); 
   Serial.println("Ready");
@@ -33,10 +37,14 @@ void loop() {
   getValues();
   calcNormValues();
   calcLinePosition();
+  calcPolePosition();
+
+  makeMessage();
   
   printValues();
   //printValuesNorm();
   //Serial.println(linePosition);
+  Serial.println(polePosition);
 
   if (digitalRead(CALIBRATION_BUTTON) == LOW) {
     calibration();
@@ -45,12 +53,16 @@ void loop() {
 }
 
 void makeMessage() {
-  message[7] = values[0];
-  message[6] = values[1];
-  message[5] = values[2];
-  message[4] = values[3];
-  message[3] = values[4];
-  message[2] = values[5];
+  message[7] = map(valuesNorm[0], 0, 1, -127, 127);
+  message[6] = map(valuesNorm[1], 0, 1, -127, 127);
+  message[5] = map(valuesNorm[2], 0, 1, -127, 127);
+  message[4] = map(valuesNorm[3], 0, 1, -127, 127);
+  message[3] = map(valuesNorm[4], 0, 1, -127, 127);
+  message[2] = map(valuesNorm[5], 0, 1, -127, 127);
+
+  message[1] = map(linePosition, -1, 1, -127, 127);
+
+  message[0] = map(polePosition, -1, 1, -127, 127);
 }
 
 void getValues() {
@@ -71,17 +83,19 @@ void calcNormValues() {
 }
 
 void calcLinePosition() {
-  float valuesNormSum = 0;
+  linePosition = 0;
   for (int i = 0; i < 6; i++) {
-    valuesNormSum += valuesNorm[i];
+    linePosition += weights[i] * valuesNorm[i];
   }
-
-  //linePosition = positions[0]*(valiesNorm[0]/valuesNormSum) + ... + positions[5]*(valiesNorm[5]/valuesNormSum)
-  for (int i = 0; i < 6; i++) {
-    linePosition += positions[i] * valuesNorm[i];
-  }
-  linePosition = linePosition / valuesNormSum;
   linePosition = constrain(linePosition, -1.0f, 1.0f);
+}
+
+void calcPolePosition() {
+  polePosition = 0;
+  for (int i = 0; i < 6; i++) {
+    linePosition += valuesNorm[i] * 2 - 1;
+  }
+  polePosition = constrain(polePosition, -1.0f, 1.0f);
 }
 
 void printValues() {
