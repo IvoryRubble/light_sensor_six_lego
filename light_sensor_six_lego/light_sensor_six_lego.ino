@@ -14,9 +14,9 @@ float polePosition = 0; //from -1 to 1
                         //polePosition >= 0 => on black pole
                         //polePosition < 0 => on white pole
                         
-int valuesMin[6] = {0, 0, 0, 0, 0, 0};
-int valuesMax[6] = {1023, 1023, 1023, 1023, 1023, 1023};
-float weights[6] = {-0.5, -0.33, -0.167, 0.167, 0.33, 0.5};
+int valuesMin[6];
+int valuesMax[6];
+const float weights[6] = {-0.5, -0.33, -0.167, 0.167, 0.33, 0.5};
 
 void setup() {
   Wire.begin(SLAVE_ADDRESS);

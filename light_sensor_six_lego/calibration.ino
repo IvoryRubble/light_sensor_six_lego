@@ -3,6 +3,11 @@ void calibration() {
   Serial.println("start calibration");
   Serial.flush();
 
+  for (int i = 0; i < 6; i++) {
+    valuesMin[i] = 1023;
+    valuesMax[i] = 0; 
+  }
+  
   unsigned long currentTime = millis();
     
   unsigned long startTime = currentTime;
