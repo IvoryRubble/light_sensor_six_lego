@@ -4,6 +4,7 @@ const int SLAVE_ADDRESS = 0x04;
 const unsigned long CALIBRATION_TIME = 3000;
 const int CALIBRATION_BUTTON = 2;
 const int LED = 5;
+const int SENSORS[6] = {A0, A1, A2, A3, A6, A7};
 
 uint8_t message[8] = {0};
 
@@ -66,12 +67,9 @@ void makeMessage() {
 }
 
 void getValues() {
-  values[0] = analogRead(A0);
-  values[1] = analogRead(A1);
-  values[2] = analogRead(A2);
-  values[3] = analogRead(A3);
-  values[4] = analogRead(A4);
-  values[5] = analogRead(A5);
+  for (int i = 0; i < 6; i++) {
+    values[i] = analogRead(SENSORS[i]);
+  }
 }
 
 void calcNormValues() {
