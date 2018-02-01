@@ -45,13 +45,18 @@ void calibration() {
 
   digitalWrite(LED, LOW);
   delay(200);
-  
-  char s[50];
-  for (int i = 0; i < 6; i++) {
-    sprintf(s, "valuesMin[%d] = %d\t\t valuesmax[%d] = %d \n", i, valuesMin[i], i, valuesMax[i]); 
-  }
-  Serial.print(s);
-  Serial.flush();
+
+  saveCalibrationValues();
+  printCalibrationValues();
 }
 
+void loadCalibrationValues() {
+  EEPROM.get(valuesMinAddress, valuesMin);
+  EEPROM.get(valuesMaxAddress, valuesMax);
+}
+
+void saveCalibrationValues() {
+  EEPROM.put(valuesMinAddress, valuesMin);
+  EEPROM.put(valuesMaxAddress, valuesMax);
+}
 
