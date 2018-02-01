@@ -1,3 +1,4 @@
+#include <EEPROM.h>
 #include <Wire.h>
 
 const int SLAVE_ADDRESS = 0x04;
@@ -16,7 +17,9 @@ float polePosition = 0; //from -1 to 1
                         //polePosition < 0 => on white pole
                         
 int valuesMin[6];
+const int valuesMinAddress = 0;
 int valuesMax[6];
+const int valuesMaxAddress = valuesMinAddress + sizeof(valuesMax);
 const float weights[6] = {-0.5, -0.33, -0.167, 0.167, 0.33, 0.5};
 
 void setup() {
@@ -27,11 +30,17 @@ void setup() {
   pinMode(CALIBRATION_BUTTON, INPUT_PULLUP);
   pinMode(LED, OUTPUT);
   digitalWrite(LED, LOW);
+
+  loadCalibrationValues();
   
   Serial.begin(9600); 
-  Serial.println("Ready");
+  printCalibrationValues();
+  Serial.println();
   Serial.print("SlaveAddress = 0x");
   Serial.println(SLAVE_ADDRESS, HEX);
+  Serial.println();
+  Serial.println("Ready");
+  Serial.println();
 }
 
 void loop() {
@@ -50,6 +59,7 @@ void loop() {
   if (digitalRead(CALIBRATION_BUTTON) == LOW) {
     calibration();
   }
+  
   //delay(1000);
 }
 
@@ -95,22 +105,6 @@ void calcPolePosition() {
   }
   polePosition /= 6;
   polePosition = constrain(polePosition, -1.0f, 1.0f);
-}
-
-void printValues() {
-  char s[50];
-  for (int i = 0; i < 6; i++) {
-    sprintf(s, "%d\t", values[i]);
-    Serial.println(s);
-  }
-}
-
-void printValuesNorm() {
-  char s[50];
-  for (int i = 0; i < 6; i++) {
-    sprintf(s, "%g\t", (double)valuesNorm[i]);
-    Serial.println(s);
-  }
 }
 
 void receiveData(int byteCount) {
