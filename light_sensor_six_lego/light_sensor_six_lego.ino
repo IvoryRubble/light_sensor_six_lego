@@ -56,6 +56,7 @@ void loop() {
   //printLinePosition();
   //printPolePosition();
   printMessage();
+  //Serial.println(mapf(valuesNorm[0], 0, 1, -127, 127));
 
   if (digitalRead(CALIBRATION_BUTTON) == LOW) {
     calibration();
@@ -65,16 +66,16 @@ void loop() {
 }
 
 void makeMessage() {
-  message[7] = map(valuesNorm[0], 0, 1, -127, 127);
-  message[6] = map(valuesNorm[1], 0, 1, -127, 127);
-  message[5] = map(valuesNorm[2], 0, 1, -127, 127);
-  message[4] = map(valuesNorm[3], 0, 1, -127, 127);
-  message[3] = map(valuesNorm[4], 0, 1, -127, 127);
-  message[2] = map(valuesNorm[5], 0, 1, -127, 127);
+  message[7] = mapf(valuesNorm[0], 0, 1, -127, 127);
+  message[6] = mapf(valuesNorm[1], 0, 1, -127, 127);
+  message[5] = mapf(valuesNorm[2], 0, 1, -127, 127);
+  message[4] = mapf(valuesNorm[3], 0, 1, -127, 127);
+  message[3] = mapf(valuesNorm[4], 0, 1, -127, 127);
+  message[2] = mapf(valuesNorm[5], 0, 1, -127, 127);
 
-  message[1] = map(linePosition, -1, 1, -127, 127);
+  message[1] = mapf(linePosition, -1, 1, -127, 127);
 
-  message[0] = map(polePosition, -1, 1, -127, 127);
+  message[0] = mapf(polePosition, -1, 1, -127, 127);
 }
 
 void getValues() {

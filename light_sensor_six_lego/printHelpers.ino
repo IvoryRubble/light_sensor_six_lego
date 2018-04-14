@@ -39,7 +39,7 @@ void printPolePosition() {
 void printMessage() {
   Serial.print("message:\t");
   for (int i = 0; i < 8; i++) {
-    Serial.print(message[i]);
+    Serial.print((int8_t)message[i]);
     Serial.print("\t");
   }
   Serial.println();
