@@ -4,7 +4,7 @@
 const int SLAVE_ADDRESS = 0x04;
 const unsigned long CALIBRATION_TIME = 3000;
 const int CALIBRATION_BUTTON = 2;
-const int LED = 5;
+const int LED = 13;
 const int SENSORS[6] = {A0, A1, A2, A3, A6, A7};
 
 uint8_t message[8] = {0};
@@ -52,15 +52,16 @@ void loop() {
   makeMessage();
   
   printValues();
-  //printValuesNorm();
-  //Serial.println(linePosition);
-  //Serial.println(polePosition);
+  printValuesNorm();
+  //printLinePosition();
+  //printPolePosition();
+  printMessage();
 
   if (digitalRead(CALIBRATION_BUTTON) == LOW) {
     calibration();
   }
   
-  //delay(1000);
+  delay(1000);
 }
 
 void makeMessage() {

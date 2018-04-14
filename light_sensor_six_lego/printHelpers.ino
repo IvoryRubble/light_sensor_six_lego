@@ -1,5 +1,6 @@
 
 void printValues() {
+  Serial.print("raw values:\t");
   for (int i = 0; i < 6; i++) {
     Serial.print(values[i]);
     Serial.print("\t");
@@ -8,6 +9,7 @@ void printValues() {
 }
 
 void printValuesNorm() {
+  Serial.print("norm values:\t");
   for (int i = 0; i < 6; i++) {
     Serial.print(valuesNorm[i]);
     Serial.print("\t");
@@ -24,7 +26,18 @@ void printCalibrationValues() {
   Serial.flush();
 }
 
+void printLinePosition() {
+  Serial.print("line position:\t");
+  Serial.println(linePosition);
+}
+
+void printPolePosition() {
+  Serial.print("pole position:\t");
+  Serial.println(polePosition);
+}
+
 void printMessage() {
+  Serial.print("message:\t");
   for (int i = 0; i < 8; i++) {
     Serial.print(message[i]);
     Serial.print("\t");
