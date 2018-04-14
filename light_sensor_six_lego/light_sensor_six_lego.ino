@@ -51,18 +51,18 @@ void loop() {
 
   makeMessage();
   
-  printValues();
-  printValuesNorm();
+  //printValues();
+  //printValuesNorm();
   //printLinePosition();
   //printPolePosition();
-  printMessage();
+  //printMessage();
   //Serial.println(mapf(valuesNorm[0], 0, 1, -127, 127));
 
   if (digitalRead(CALIBRATION_BUTTON) == LOW) {
     calibration();
   }
   
-  delay(1000);
+  //delay(1000);
 }
 
 void makeMessage() {
